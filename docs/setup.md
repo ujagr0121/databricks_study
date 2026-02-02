@@ -1,174 +1,174 @@
-# Setup Guide
+# セットアップガイド
 
-Complete setup guide for the Databricks Learning Management System.
+Databricks学習管理システムの完全セットアップガイド。
 
-## Prerequisites
+## 前提条件
 
-### Required Tools
+### 必要なツール
 
 1. **GitHub CLI** (`gh`)
    ```bash
-   # macOS with Homebrew
+   # macOS（Homebrew使用）
    brew install gh
 
-   # Other systems: https://cli.github.com/
+   # その他のシステム: https://cli.github.com/
    ```
 
-2. **jq** (JSON query tool)
+2. **jq** （JSONクエリツール）
    ```bash
-   # macOS with Homebrew
+   # macOS（Homebrew使用）
    brew install jq
 
-   # Other systems: https://stedolan.github.io/jq/
+   # その他のシステム: https://stedolan.github.io/jq/
    ```
 
 3. **Bash** (4.0+)
-   - Most systems come with Bash
-   - Verify: `bash --version`
+   - ほとんどのシステムにBashがプリインストール済み
+   - 確認: `bash --version`
 
 4. **Git**
-   - Required for repository operations
-   - Verify: `git --version`
+   - リポジトリ操作に必要
+   - 確認: `git --version`
 
-### GitHub Account Setup
+### GitHubアカウントのセットアップ
 
-1. **Personal Account**: https://github.com/ujagr0121 (already set up)
-2. **Repository Access**: Fork or use existing databricks_study repo
+1. **個人アカウント**: https://github.com/ujagr0121 （すでにセットアップ済み）
+2. **リポジトリアクセス**: databricks_studyリポジトリをフォークまたは使用
 3. **Personal Access Token**:
-   - Go to: https://github.com/settings/tokens/new
-   - Token name: "Claude Code - Databricks Study"
-   - Expiration: 90 days or custom
-   - Scopes needed:
-     - `repo` (full control of private repositories)
-     - `project` (read and write to Projects)
-   - Click "Generate token"
-   - **Save the token securely** - you'll need it next
+   - アクセス: https://github.com/settings/tokens/new
+   - トークン名: "Claude Code - Databricks Study"
+   - 有効期限: 90日またはカスタム
+   - 必要なスコープ:
+     - `repo` （プライベートリポジトリの完全制御）
+     - `project` （Projectsへの読み書き）
+   - 「Generate token」をクリック
+   - **トークンを安全に保存** - 次のステップで必要になります
 
-## Initial Setup Steps
+## 初期セットアップ手順
 
-### Step 1: Authenticate with GitHub CLI
+### ステップ1: GitHub CLIで認証
 
 ```bash
 gh auth login
-# Follow prompts:
-# - Protocol: HTTPS
-# - Authenticate GitHub CLI for your account: Yes
-# - Paste your Personal Access Token when prompted
-# - Git credential helper: Recommended (or choose as needed)
+# プロンプトに従う:
+# - プロトコル: HTTPS
+# - GitHubアカウントでGitHub CLIを認証: Yes
+# - プロンプト表示時にPersonal Access Tokenを貼り付け
+# - Git credential helper: 推奨（または必要に応じて選択）
 ```
 
-Verify authentication:
+認証を確認:
 ```bash
 gh auth status
-# Should show: Logged in to github.com as ujagr0121
+# 表示されるべき内容: Logged in to github.com as ujagr0121
 ```
 
-### Step 2: Create GitHub Project
+### ステップ2: GitHub Projectを作成
 
-Create the GitHub Projects V2 project that will host all tasks:
+すべてのタスクをホストするGitHub Projects V2プロジェクトを作成:
 
 ```bash
 cd /Users/ujagr0121/dev/projects/databricks_study
 
-# Run the setup script
+# セットアップスクリプトを実行
 bash scripts/github/setup-project.sh
 
-# Expected output:
+# 期待される出力:
 # ✓ Prerequisites check passed
 # ✓ Project ID: [UUID]
 # ✓ Field cache created
-# Next Steps: Create custom fields in GitHub Project UI
+# Next Steps: GitHub Project UIでカスタムフィールドを作成
 ```
 
-### Step 3: Manually Create Custom Fields
+### ステップ3: カスタムフィールドを手動で作成
 
-The GraphQL API doesn't support creating custom fields, so these must be created manually:
+GraphQL APIはカスタムフィールドの作成をサポートしていないため、手動で作成する必要があります：
 
-1. **Open GitHub Project**: `gh project view 1 --web`
-   - This opens your browser to the project settings
+1. **GitHub Projectを開く**: `gh project view 1 --web`
+   - ブラウザでプロジェクト設定が開きます
 
-2. **Add Custom Fields** (in Settings → Custom Fields):
+2. **カスタムフィールドを追加**（Settings → Custom Fieldsで）:
 
-   **Single Select Fields:**
-   - **Status**: Options: `Todo`, `Doing`, `Done`, `Blocked`
-   - **Week**: Options: `W1`, `W2`, ..., `W12`
-   - **Track**: Options: `Common`, `DE`, `ML`
-   - **Priority**: Options: `P0`, `P1`, `P2`
+   **単一選択フィールド:**
+   - **Status**: オプション: `Todo`, `Doing`, `Done`, `Blocked`
+   - **Week**: オプション: `W1`, `W2`, ..., `W12`
+   - **Track**: オプション: `Common`, `DE`, `ML`
+   - **Priority**: オプション: `P0`, `P1`, `P2`
 
-   **Number Field:**
-   - **Estimate**: (for hours)
+   **数値フィールド:**
+   - **Estimate**: （時間用）
 
-   **Text Field:**
-   - **Outcome**: (for completion notes)
+   **テキストフィールド:**
+   - **Outcome**: （完了ノート用）
 
-3. **Save Field Settings**
+3. **フィールド設定を保存**
 
-4. **Refresh Field Cache**:
+4. **フィールドキャッシュをリフレッシュ**:
    ```bash
-   # After creating fields, refresh the cache
+   # フィールド作成後、キャッシュをリフレッシュ
    bash scripts/github/lib/fields.sh
-   # Should see: ✓ Cache updated
+   # 表示されるべき内容: ✓ Cache updated
    ```
 
-### Step 4: Create Issue Labels
+### ステップ4: Issueラベルを作成
 
-Create labels for categorizing tasks:
+タスク分類用のラベルを作成:
 
 ```bash
 bash scripts/github/create-labels.sh
 
-# Expected output:
+# 期待される出力:
 # ✓ Created label: spark-sql
 # ✓ Created label: delta
-# ... (and more topic labels)
+# ... (その他のトピックラベル)
 # ✓ Label setup completed
 ```
 
-Verify labels were created:
+ラベルが作成されたことを確認:
 ```bash
 gh label list --limit 100
 ```
 
-### Step 5: Verify Setup
+### ステップ5: セットアップを確認
 
-Test that everything is working:
+すべてが動作していることをテスト:
 
 ```bash
-# Check GitHub auth
+# GitHub認証を確認
 gh auth status
 
-# List projects
+# プロジェクトをリスト
 gh project list
 
-# View project
+# プロジェクトを表示
 gh project view 1 --web
 
-# Test GraphQL query
+# GraphQLクエリをテスト
 gh api graphql -f query='query { viewer { login } }'
-# Should return your GitHub username
+# GitHubユーザー名を返すべき
 ```
 
-## File Permissions
+## ファイル権限
 
-Make scripts executable:
+スクリプトを実行可能にする:
 
 ```bash
 chmod +x scripts/github/lib/*.sh
 chmod +x scripts/github/*.sh
 chmod +x scripts/validation/*.sh
-chmod +x .claude/skills/*/restore.sh
+chmod +x .claude/skills/*/register.sh
 ```
 
-Or recursively:
+または再帰的に:
 ```bash
 find scripts .claude -name "*.sh" -exec chmod +x {} \;
 ```
 
-## Claude Code Configuration
+## Claude Code設定
 
-### Update .claude/settings.local.json
+### .claude/settings.local.jsonの更新
 
-Ensure permissions are properly configured:
+権限が適切に設定されていることを確認:
 
 ```json
 {
@@ -194,9 +194,9 @@ Ensure permissions are properly configured:
 }
 ```
 
-### Update management.toml
+### management.tomlの更新
 
-Verify these settings are enabled:
+以下の設定が有効になっていることを確認:
 
 ```toml
 [execution]
@@ -212,51 +212,51 @@ max_iterations = 30
 timeout = 180
 ```
 
-## Troubleshooting
+## トラブルシューティング
 
 ### "gh: command not found"
 
-GitHub CLI not installed or not in PATH.
+GitHub CLIがインストールされていないかPATHに含まれていません。
 
 ```bash
-# Install
+# インストール
 brew install gh
 
-# Verify
+# 確認
 gh --version
 ```
 
 ### "jq: command not found"
 
-jq not installed.
+jqがインストールされていません。
 
 ```bash
-# Install
+# インストール
 brew install jq
 
-# Verify
+# 確認
 jq --version
 ```
 
 ### "Error: Not authenticated with GitHub"
 
-Authentication failed or expired.
+認証が失敗したか期限切れです。
 
 ```bash
-# Re-authenticate
+# 再認証
 gh auth logout
 gh auth login
 
-# Or refresh token if expired:
+# またはトークンが期限切れの場合はリフレッシュ:
 gh auth refresh
 ```
 
 ### "Field cache not found"
 
-Cache file not created during setup.
+セットアップ中にキャッシュファイルが作成されませんでした。
 
 ```bash
-# Recreate cache
+# キャッシュを再作成
 source scripts/github/lib/graphql.sh
 source scripts/github/lib/fields.sh
 init_cache_dir
@@ -266,94 +266,94 @@ refresh_field_cache "$project_id"
 
 ### "Error: Could not find Project"
 
-Project not created yet.
+プロジェクトがまだ作成されていません。
 
 ```bash
-# Create project manually
+# プロジェクトを手動で作成
 gh project create --title "Databricks DE Professional Roadmap" --owner "@me"
 
-# Or re-run setup
+# またはセットアップを再実行
 bash scripts/github/setup-project.sh
 ```
 
 ### "Custom fields not showing in Project"
 
-Fields may not have been created in the UI.
+フィールドがUIで作成されていない可能性があります。
 
 ```bash
-# Open project and manually add fields:
+# プロジェクトを開いて手動でフィールドを追加:
 gh project view 1 --web
 
-# Then refresh cache:
+# その後キャッシュをリフレッシュ:
 bash scripts/github/lib/fields.sh
-# Select refresh option
+# リフレッシュオプションを選択
 ```
 
-### GraphQL Errors
+### GraphQLエラー
 
-For debugging GraphQL issues:
+GraphQL問題のデバッグ:
 
 ```bash
-# Add --debug flag for verbose output
+# 詳細な出力のために--debugフラグを追加
 gh api graphql --debug -f query='...'
 
-# Save response to file
+# レスポンスをファイルに保存
 gh api graphql -f query='...' > graphql-response.json
 
-# View response
+# レスポンスを表示
 cat graphql-response.json | jq '.'
 ```
 
-## Testing Setup
+## セットアップのテスト
 
-Quick validation that everything is working:
+すべてが動作していることを簡単に検証:
 
 ```bash
 #!/bin/bash
 # test-setup.sh
 
-echo "Testing GitHub CLI..."
+echo "GitHub CLIをテスト中..."
 gh auth status || exit 1
 
-echo "Testing jq..."
+echo "jqをテスト中..."
 echo '{"test": true}' | jq '.test' || exit 1
 
-echo "Testing Project access..."
+echo "Projectアクセスをテスト中..."
 gh project list || exit 1
 
-echo "Testing custom fields..."
+echo "カスタムフィールドをテスト中..."
 bash scripts/github/lib/fields.sh show_cache_info || exit 1
 
-echo "✓ All tests passed!"
+echo "✓ すべてのテストが成功しました！"
 ```
 
-Save this script and run:
+このスクリプトを保存して実行:
 ```bash
 bash test-setup.sh
 ```
 
-## Next Steps
+## 次のステップ
 
-After setup is complete:
+セットアップ完了後：
 
-1. **Create first task**: See `docs/workflow.md`
-2. **Invite learning-planner**: Generate Week 1 tasks
-3. **Register tasks**: Use `/register-task` Skill
-4. **Start learning**: Add content to Markdown files
-5. **Track progress**: Use `/update-progress` regularly
+1. **最初のタスクを作成**: `docs/workflow.md`を参照
+2. **learning-plannerを実行**: Week 1タスクを生成
+3. **タスクを登録**: `/register-task` Skillを使用
+4. **学習を開始**: Markdownファイルにコンテンツを追加
+5. **進捗を追跡**: 定期的に`/update-progress`を使用
 
-## Additional Resources
+## 追加リソース
 
-- GitHub CLI docs: https://cli.github.com/manual
-- GitHub Projects V2: https://docs.github.com/en/issues/planning-and-tracking-with-projects
-- GraphQL API: https://docs.github.com/en/graphql
-- jq manual: https://stedolan.github.io/jq/manual/
+- GitHub CLIドキュメント: https://cli.github.com/manual
+- GitHub Projects V2: https://docs.github.com/ja/issues/planning-and-tracking-with-projects
+- GraphQL API: https://docs.github.com/ja/graphql
+- jqマニュアル: https://stedolan.github.io/jq/manual/
 
-## Support
+## サポート
 
-If you encounter issues:
+問題が発生した場合：
 
-1. Check relevant log files in `.claude/` directory
-2. Review troubleshooting section above
-3. Test individual components with `test-setup.sh`
-4. Check GitHub API status: https://www.githubstatus.com/
+1. `.claude/`ディレクトリの関連ログファイルを確認
+2. 上記のトラブルシューティングセクションをレビュー
+3. `test-setup.sh`で個別コンポーネントをテスト
+4. GitHub APIステータスを確認: https://www.githubstatus.com/

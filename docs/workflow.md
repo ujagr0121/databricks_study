@@ -1,57 +1,57 @@
-# Daily Workflow Guide
+# 日常ワークフローガイド
 
-Step-by-step guide for using the learning management system in your daily study routine.
+学習管理システムを日々の学習ルーチンで使用するためのステップバイステップガイド。
 
-## Quick Reference
+## クイックリファレンス
 
-### Commands
+### コマンド
 
 ```bash
-# Register a new task to GitHub
+# 新しいタスクをGitHubに登録
 /register-task tasks/week01/task-01-spark-basics.md
 
-# Sync progress to GitHub
+# 進捗をGitHubに同期
 /update-progress tasks/week01/task-01-spark-basics.md
 
-# Batch sync all tasks in a week
+# 週のすべてのタスクを一括同期
 /sync-week W1
 
-# List agents
+# エージェントをリスト
 /agents
-# Then select: learning-planner or progress-analyzer
+# その後選択: learning-planner または progress-analyzer
 ```
 
-### File Locations
+### ファイルの場所
 
 ```
-tasks/week01/task-01-spark-basics.md      # Local Markdown task
-.claude/agents/learning-planner.md         # Planning agent
-.claude/agents/progress-analyzer.md        # Analysis agent
-.claude/skills/register-task/register.sh   # Registration script
-.claude/skills/update-progress/update.sh   # Sync script
+tasks/week01/task-01-spark-basics.md      # ローカルMarkdownタスク
+.claude/agents/learning-planner.md         # 計画エージェント
+.claude/agents/progress-analyzer.md        # 分析エージェント
+.claude/skills/register-task/register.sh   # 登録スクリプト
+.claude/skills/update-progress/update.sh   # 同期スクリプト
 ```
 
 ---
 
-## Standard Workflow
+## 標準ワークフロー
 
-### 1. START A NEW WEEK
+### 1. 新しい週を開始
 
-**Goal**: Create learning plan for the upcoming week
+**目標**: 今後の週の学習計画を作成
 
-**Steps**:
+**手順**:
 
-1. Open Claude Code (if not already open)
+1. Claude Code を開く（開いていない場合）
 
-2. Invoke `learning-planner` agent:
+2. `learning-planner`エージェントを実行:
    ```
-   I want to start Week 1: Databricks Lakehouse and Spark Fundamentals
-   Please create 5 structured learning tasks for this week
+   Week 1を開始したいです: Databricks LakehouseとSpark基礎
+   この週に5つの構造化された学習タスクを作成してください
    ```
 
-3. Review generated tasks in `tasks/week01/`
+3. `tasks/week01/`に生成されたタスクをレビュー
 
-4. Register each task:
+4. 各タスクを登録:
    ```bash
    /register-task tasks/week01/task-01-lakehouse-fundamentals.md
    /register-task tasks/week01/task-02-spark-architecture.md
@@ -60,150 +60,150 @@ tasks/week01/task-01-spark-basics.md      # Local Markdown task
    /register-task tasks/week01/task-05-hands-on-exercise.md
    ```
 
-5. View tasks on GitHub:
+5. GitHubでタスクを表示:
    ```bash
    gh project view 1 --web
    ```
 
-### 2. DAILY LEARNING
+### 2. 日々の学習
 
-**Goal**: Actively learn and track progress
+**目標**: 積極的に学習し、進捗を追跡
 
-**Steps**:
+**手順**:
 
-1. **Choose a task**:
-   - Open `tasks/week01/task-01-lakehouse-fundamentals.md`
-   - Read learning objectives
+1. **タスクを選択**:
+   - `tasks/week01/task-01-lakehouse-fundamentals.md`を開く
+   - 学習目標を読む
 
-2. **Study**:
-   - Follow links and resources
-   - Take notes (optional, external to system)
-   - Practice hands-on exercises
+2. **学習**:
+   - リンクとリソースに従う
+   - ノートを取る（システム外でも可）
+   - 実践演習を行う
 
-3. **Record progress in Markdown**:
-   - Find "学習記録" section
-   - Add entry with date:
+3. **Markdownに進捗を記録**:
+   - 「学習記録」セクションを見つける
+   - 日付付きでエントリを追加:
    ```markdown
    ## 2026-02-02
-   - Completed Lakehouse architecture section
-   - Reviewed 3 official Databricks docs
-   - Spent 2 hours
+   - Lakehouseアーキテクチャセクションを完了
+   - Databricks公式ドキュメント3つをレビュー
+   - 2時間実施
    ```
 
-4. **Update status** if task changes:
+4. **ステータスを更新**（タスクが変更された場合）:
    ```yaml
-   status: Doing  # Changed from Todo
+   status: Doing  # Todoから変更
    ```
 
-### 3. SYNC PROGRESS (Daily)
+### 3. 進捗を同期（毎日）
 
-**Goal**: Update GitHub Issues with today's progress
+**目標**: 今日の進捗でGitHub Issueを更新
 
-**Steps**:
+**手順**:
 
-1. At end of study session:
+1. 学習セッション終了時:
    ```bash
    /update-progress tasks/week01/task-01-lakehouse-fundamentals.md
    ```
 
-2. Verify on GitHub:
+2. GitHubで確認:
    ```bash
-   gh issue view 1  # Replace 1 with your issue number
+   gh issue view 1  # 1をあなたのIssue番号に置き換え
    ```
 
-3. Check Issue has:
-   - New comment with progress notes
-   - Status field updated (if changed)
+3. Issueに以下があることを確認:
+   - 進捗ノートを含む新しいコメント
+   - Statusフィールドが更新されている（変更された場合）
 
-### 4. COMPLETE A TASK
+### 4. タスクを完了
 
-**Goal**: Mark task done when learning objectives are met
+**目標**: 学習目標が達成されたらタスクを完了とマーク
 
-**Steps**:
+**手順**:
 
-1. **Update local Markdown**:
+1. **ローカルMarkdownを更新**:
    ```yaml
-   status: Done  # Changed from Doing
+   status: Done  # Doingから変更
    ```
 
-2. **Add outcome summary**:
+2. **アウトカムサマリーを追加**:
    ```markdown
    # アウトカム
-   Successfully mastered Lakehouse fundamentals:
-   ✓ Understand medallion architecture
-   ✓ Can explain data lakehouse advantages
-   ✓ Completed practice exercises
+   Lakehouse基礎を正常にマスター:
+   ✓ メダリオンアーキテクチャを理解
+   ✓ データレイクハウスの利点を説明可能
+   ✓ 練習演習を完了
    ```
 
-3. **Sync to GitHub**:
+3. **GitHubに同期**:
    ```bash
    /update-progress tasks/week01/task-01-lakehouse-fundamentals.md
    ```
 
-4. **View on Project**:
-   - Status field now shows "Done"
-   - Outcome field populated
-   - Issue shows completion comment
+4. **Projectで表示**:
+   - StatusフィールドがDoneを表示
+   - Outcomeフィールドが入力済み
+   - Issueに完了コメントが表示
 
-### 5. WEEKLY REVIEW
+### 5. 週次レビュー
 
-**Goal**: Analyze progress and plan ahead
+**目標**: 進捗を分析し、今後の計画を立てる
 
-**Steps**:
+**手順**:
 
-1. **Batch sync all week's tasks**:
+1. **週のすべてのタスクを一括同期**:
    ```bash
    /sync-week W1
    ```
 
-   Output shows:
-   - Total tasks: 5
-   - Completed: 3
-   - Time: 10 hours estimated, 12 hours actual
-   - Blockers (if any)
+   出力内容:
+   - タスク総数: 5
+   - 完了: 3
+   - 時間: 推定10時間、実績12時間
+   - ブロッカー（もしあれば）
 
-2. **Detailed analysis**:
+2. **詳細分析**:
    ```
-   Please analyze my Week 1 progress and tell me:
-   - Which topics are taking longer than expected
-   - What's my completion velocity
-   - Should I adjust Week 2 planning
+   Week 1の進捗を分析して、次を教えてください:
+   - 予想よりも時間がかかっているトピック
+   - 完了速度
+   - Week 2の計画を調整すべきか
    ```
 
-3. **Adjust for next week**:
-   - Learning planner suggests adjustments
-   - Create Week 2 tasks
-   - Register them with `/register-task`
+3. **次週のための調整**:
+   - learning-plannerが調整案を提示
+   - Week 2タスクを作成
+   - `/register-task`で登録
 
 ---
 
-## Detailed Task Operations
+## 詳細なタスク操作
 
-### Create Task from Template
+### テンプレートからタスクを作成
 
 ```bash
-# Copy template
+# テンプレートをコピー
 cp tasks/template.md tasks/week01/task-01-my-task.md
 
-# Edit the file
+# ファイルを編集
 nano tasks/week01/task-01-my-task.md
 
-# Update required fields:
+# 必須フィールドを更新:
 # week: W1
 # track: DE
-# title: "My Learning Task"
+# title: "私の学習タスク"
 # estimate: 5
 # priority: P1
 # status: Todo
 # labels: [study, spark-sql]
 ```
 
-### Register Single Task
+### 単一タスクを登録
 
 ```bash
 /register-task tasks/week01/task-01-my-task.md
 
-# Output:
+# 出力:
 # ✓ Issue created: #1
 # ✓ Added to Project
 # ✓ Fields configured
@@ -211,54 +211,54 @@ nano tasks/week01/task-01-my-task.md
 # View: https://github.com/ujagr0121/databricks_study/issues/1
 ```
 
-### Register Multiple Tasks (Batch)
+### 複数タスクを登録（バッチ）
 
 ```bash
 for file in tasks/week01/task-*.md; do
   /register-task "$file"
 done
 
-# Or use the skill:
+# またはスキルを使用:
 /register-task tasks/week01/*.md
 ```
 
-### Update Progress (Existing Task)
+### 進捗を更新（既存タスク）
 
 ```bash
 /update-progress tasks/week01/task-01-my-task.md
 
-# Output:
+# 出力:
 # ✓ Found Issue: #1
 # ✓ Found progress notes
 # ✓ Posted comment to Issue #1
 # ✓ Status updated: Done
 ```
 
-### View Issue on GitHub
+### GitHubでIssueを表示
 
 ```bash
-# View in terminal
+# ターミナルで表示
 gh issue view 1
 
-# Open in browser
+# ブラウザで開く
 gh issue view 1 --web
 
-# List all issues
+# すべてのIssueをリスト
 gh issue list --label study
 ```
 
 ---
 
-## Advanced Workflows
+## 高度なワークフロー
 
-### Multi-Day Task Tracking
+### 複数日にわたるタスク追跡
 
-For tasks spanning multiple days:
+複数日にまたがるタスクの場合:
 
 ```markdown
 ---
 week: W1
-title: "Delta Lake Deep Dive - Part 1 & 2"
+title: "Delta Lake詳細 - パート1 & 2"
 estimate: 8
 status: Doing
 ---
@@ -266,28 +266,28 @@ status: Doing
 # 学習記録
 
 ## 2026-02-02
-- Read Delta Lake overview
-- 3 hours spent
+- Delta Lake概要を読了
+- 3時間実施
 
 ## 2026-02-03
-- Completed optimization exercise
-- 2.5 hours spent
-- Still need: Part 2 advanced topics
+- 最適化演習を完了
+- 2.5時間実施
+- まだ必要: パート2の高度なトピック
 
 ## 2026-02-04
-- Finished Part 2: time travel
-- 2 hours spent
-- Ready to complete
+- パート2完了: タイムトラベル
+- 2時間実施
+- 完了準備完了
 ```
 
-Then sync at end:
+終了時に同期:
 ```bash
 /update-progress tasks/week01/task-02-delta-deep-dive.md
 ```
 
-### Handling Blockers
+### ブロッカーの処理
 
-When stuck on a task:
+タスクで行き詰まった場合:
 
 ```yaml
 ---
@@ -295,231 +295,231 @@ status: Blocked
 ---
 
 # アウトカム
-Blocked on: Understanding optimization parameters
-Next: Need to review docs or ask for clarification
+ブロッカー: 最適化パラメータの理解
+次のステップ: ドキュメントをレビューするか質問が必要
 ```
 
-Sync and get help:
+同期してヘルプを得る:
 ```bash
 /update-progress tasks/week01/task-03-blocked-task.md
 
-# Then in Claude Code:
-I'm blocked on task-03 (Issue #3). Can you help me understand?
+# その後Claude Codeで:
+task-03（Issue #3）でブロックされています。理解を手伝ってもらえますか？
 ```
 
-### Switching Between Tasks
+### タスク間の切り替え
 
-If context switching during week:
+週の途中でコンテキスト切り替えする場合:
 
 ```bash
-# Update current task
+# 現在のタスクを更新
 /update-progress tasks/week01/task-01-current.md
 
-# Edit next task status
+# 次のタスクのステータスを編集
 nano tasks/week01/task-02-next.md
-# Change: status: Todo → status: Doing
+# 変更: status: Todo → status: Doing
 
-# Sync new status
+# 新しいステータスを同期
 /update-progress tasks/week01/task-02-next.md
 ```
 
-### Re-estimating Tasks
+### タスクの再見積もり
 
-If estimate was too low/high:
+見積もりが低すぎた/高すぎた場合:
 
 ```yaml
-# Edit in Markdown
-estimate: 8  # was 6, takes longer than expected
+# Markdownで編集
+estimate: 8  # 6だったが、予想より時間がかかる
 
-# When registered, it will be updated:
-# OR manually update GitHub Project custom field
+# 登録時に更新される
+# またはGitHub Projectカスタムフィールドを手動更新
 ```
 
 ---
 
-## GitHub Project Navigation
+## GitHub Projectナビゲーション
 
-### View All Tasks
+### すべてのタスクを表示
 
 ```bash
 gh project view 1 --web
 ```
 
-Opens browser to your Project board.
+ブラウザでProjectボードを開きます。
 
-**Features**:
-- Drag tasks between Status columns (Todo → Doing → Done)
-- Filter by Week, Track, Priority
-- View custom fields
-- Add notes to tasks
+**機能**:
+- タスクをStatus列間でドラッグ（Todo → Doing → Done）
+- Week、Track、Priorityでフィルター
+- カスタムフィールドを表示
+- タスクにノートを追加
 
-### View Week's Tasks
+### 週のタスクを表示
 
-Using the Project filters:
+Projectフィルターを使用:
 
-1. Open: `gh project view 1 --web`
-2. Click "Filter" button
-3. Add filter: `Week is W1`
-4. View: All W1 tasks in columns
+1. 開く: `gh project view 1 --web`
+2. 「Filter」ボタンをクリック
+3. フィルターを追加: `Week is W1`
+4. 表示: 列内のすべてのW1タスク
 
-### View by Status
+### ステータスで表示
 
 ```bash
-# In Project UI, filter by Status column
-# Or via CLI:
+# Project UIでStatus列でフィルター
+# またはCLI経由:
 
-gh issue list --state all --label study  # All study tasks
-gh issue list --state open --label study  # Open tasks only
+gh issue list --state all --label study  # すべての学習タスク
+gh issue list --state open --label study  # オープンタスクのみ
 ```
 
-### Create Checklist from Project
+### Projectからチェックリストを作成
 
 ```bash
-# Generate markdown checklist of current week
+# 現在の週のmarkdownチェックリストを生成
 gh issue list --state all | grep "W1" | cut -d'#' -f2 | \
   xargs -I {} echo "- [ ] Issue #{}"
 ```
 
 ---
 
-## Integration with Learning
+## 学習との統合
 
-### Link External Resources
+### 外部リソースをリンク
 
-In task Markdown:
+タスクMarkdownで:
 
 ```markdown
 # 学習目標
-- Master Spark DataFrame API
+- Spark DataFrame APIをマスター
 
-# Resources
-- Official Docs: https://docs.databricks.com/dev-tools/python/databricks-sql-python.html
-- Video Tutorial: [link]
-- Practice Repo: [link]
+# リソース
+- 公式ドキュメント: https://docs.databricks.com/dev-tools/python/databricks-sql-python.html
+- ビデオチュートリアル: [リンク]
+- 練習リポジトリ: [リンク]
 
 # 学習記録
 ## 2026-02-02
-- Watched video tutorial (45 min)
-- Read official docs (1 hour)
+- ビデオチュートリアル視聴（45分）
+- 公式ドキュメント読了（1時間）
 ```
 
-### Attach Code/Notebooks
+### コード/ノートブックを添付
 
-While not in Markdown directly, reference external files:
+Markdown内で直接ではないが、外部ファイルを参照:
 
 ```markdown
 # 学習記録
 ## 2026-02-02
-- Completed notebook: `../notebooks/week01_spark_basics.py`
-- Exercise repo: [link to gist or repo]
+- ノートブック完了: `../notebooks/week01_spark_basics.py`
+- 演習リポジトリ: [gistまたはリポジトリのリンク]
 ```
 
-Then add to Git and link:
+その後Gitに追加してリンク:
 ```bash
 git add notebooks/week01_spark_basics.py
-git commit -m "Week 1: Spark basics notebook"
+git commit -m "Week 1: Spark基礎ノートブック"
 
-# Reference in progress notes:
-# See commit: [hash]
+# 進捗ノートで参照:
+# コミット参照: [hash]
 ```
 
 ---
 
-## Troubleshooting Common Issues
+## 一般的な問題のトラブルシューティング
 
-### Task won't register
+### タスクが登録できない
 
 ```bash
-# Check validation
+# 検証を確認
 bash scripts/validation/validate-task.sh tasks/week01/task-01.md
 
-# Common issues:
-# - Missing required fields (week, track, title, estimate)
-# - Invalid week format (use W1-W12, not Week1)
-# - Invalid track (use Common, DE, or ML)
-# - Invalid status (use Todo, Doing, Done, or Blocked)
+# 一般的な問題:
+# - 必須フィールド不足（week、track、title、estimate）
+# - 無効な週フォーマット（W1-W12を使用、Week1ではない）
+# - 無効なトラック（Common、DE、またはMLを使用）
+# - 無効なステータス（Todo、Doing、Done、またはBlockedを使用）
 ```
 
-### /register-task fails
+### /register-task が失敗
 
 ```bash
-# Check GitHub auth
+# GitHub認証を確認
 gh auth status
 
-# Check field cache
+# フィールドキャッシュを確認
 cat .claude/github-field-cache.json | jq '.fields'
 
-# If cache missing, refresh:
+# キャッシュが不足している場合、リフレッシュ:
 bash scripts/github/lib/fields.sh
 ```
 
-### /update-progress shows no change
+### /update-progress が変更を表示しない
 
 ```bash
-# Verify github_issue field exists
+# github_issueフィールドの存在を確認
 grep github_issue tasks/week01/task-01.md
 
-# Check Issue comments
+# Issueコメントを確認
 gh issue view <issue_number> --comments
 
-# Force refresh GitHub cache
+# GitHubキャッシュを強制リフレッシュ
 gh auth refresh
 ```
 
-### Project link shows 404
+### Projectリンクが404を表示
 
 ```bash
-# Get correct project ID
+# 正しいproject IDを取得
 gh project list
 
-# Verify project accessible
+# プロジェクトがアクセス可能か確認
 gh project view <project_id>
 ```
 
 ---
 
-## Performance Tips
+## パフォーマンスのヒント
 
-### Batch Operations
+### バッチ操作
 
-For multiple tasks at once:
+一度に複数のタスク:
 
 ```bash
-# Register all Week 1 tasks
+# すべてのWeek 1タスクを登録
 /sync-week W1
 
-# Better than looping individual /register-task calls
+# 個別の/register-task呼び出しをループするよりも良い
 ```
 
-### Update Multiple Tasks
+### 複数タスクを更新
 
 ```bash
-# Update all week 1 tasks' progress
+# すべてのweek 1タスクの進捗を更新
 for file in tasks/week01/task-*.md; do
   /update-progress "$file"
 done
 ```
 
-### Reduce API Calls
+### API呼び出しを削減
 
-- Use `/sync-week` instead of individual updates
-- Cache is refreshed once per session
-- GitHub API rate limit: 5000/hour (usually not hit)
+- 個別更新の代わりに`/sync-week`を使用
+- キャッシュはセッションごとに一度リフレッシュ
+- GitHub APIレート制限: 5000/時間（通常はヒットしない）
 
 ---
 
-## Best Practices
+## ベストプラクティス
 
-1. **Consistency**: Sync progress at least daily
-2. **Accuracy**: Record actual time spent in learning notes
-3. **Honesty**: Use realistic estimates, update if wrong
-4. **Progress**: Update status regularly (Todo → Doing → Done)
-5. **Backup**: Git commit your Markdown changes regularly
-6. **Review**: Weekly analysis to adjust pace and focus
+1. **一貫性**: 少なくとも毎日進捗を同期
+2. **正確性**: 実際の所要時間を学習ノートに記録
+3. **誠実性**: 現実的な見積もりを使用、間違っていたら更新
+4. **進捗**: ステータスを定期的に更新（Todo → Doing → Done）
+5. **バックアップ**: Markdownの変更を定期的にGitコミット
+6. **レビュー**: 週次分析でペースと焦点を調整
 
-## Next Steps
+## 次のステップ
 
-- Start with `docs/setup.md` if not yet complete
-- Review `docs/github-setup.md` for deeper GitHub config
-- Begin Week 1 with learning-planner agent
-- Check progress weekly with progress-analyzer agent
+- まだ完了していない場合は`docs/setup.md`から開始
+- より深いGitHub設定については`docs/github-setup.md`をレビュー
+- learning-plannerエージェントでWeek 1を開始
+- progress-analyzerエージェントで週次進捗を確認

@@ -1,95 +1,95 @@
-# GitHub Projects V2 Configuration Guide
+# GitHub Projects V2 設定ガイド
 
-Detailed reference for GitHub Projects V2 setup, custom fields, and GraphQL integration.
+GitHub Projects V2のセットアップ、カスタムフィールド、GraphQL統合の詳細リファレンス。
 
-## Overview
+## 概要
 
-This system uses GitHub Projects V2 as the visual dashboard for learning tasks. Projects V2 provides:
+このシステムはGitHub Projects V2を学習タスクの視覚的ダッシュボードとして使用します。Projects V2が提供する機能：
 
-- Kanban board view (Status columns)
-- Custom fields for metadata (Week, Track, Priority, Estimate, Outcome)
-- Issue integration
-- Filtering and grouping
-- GraphQL API access
-
----
-
-## Manual Field Creation
-
-Since GraphQL API doesn't support field creation, these must be created manually in the GitHub UI.
-
-### Access Project Settings
-
-1. Go to: https://github.com/ujagr0121/databricks_study
-2. Click: Projects tab
-3. Click: "Databricks DE Professional Roadmap"
-4. Click: Settings (gear icon, top right)
-
-### Create Single Select Fields
-
-**Status Field:**
-1. Click: "New Field" → "Single select"
-2. Name: `Status`
-3. Options:
-   - `Todo` (color: gray)
-   - `Doing` (color: yellow)
-   - `Done` (color: green)
-   - `Blocked` (color: red)
-4. Save
-
-**Week Field:**
-1. Click: "New Field" → "Single select"
-2. Name: `Week`
-3. Options: `W1`, `W2`, `W3`, ..., `W12`
-4. Save
-
-**Track Field:**
-1. Click: "New Field" → "Single select"
-2. Name: `Track`
-3. Options:
-   - `Common` (applies to all learners)
-   - `DE` (Data Engineering focused)
-   - `ML` (Machine Learning focused)
-4. Save
-
-**Priority Field:**
-1. Click: "New Field" → "Single select"
-2. Name: `Priority`
-3. Options: `P0` (critical), `P1` (high), `P2` (medium)
-4. Save
-
-### Create Number Field
-
-**Estimate Field:**
-1. Click: "New Field" → "Number"
-2. Name: `Estimate`
-3. Description: "Estimated hours for this task"
-4. Save
-
-### Create Text Field
-
-**Outcome Field:**
-1. Click: "New Field" → "Text"
-2. Name: `Outcome`
-3. Description: "Completion notes and outcomes"
-4. Save (limit: 255 characters)
-
-### Field Configuration Complete
-
-Once all fields are created:
-
-1. Return to project board
-2. You should see all fields as columns or in task details
-3. Run: `bash scripts/github/lib/fields.sh refresh_field_cache`
-4. Verify cache updated: `.claude/github-field-cache.json`
+- Kanbanボードビュー（Status列）
+- メタデータ用のカスタムフィールド（Week、Track、Priority、Estimate、Outcome）
+- Issue統合
+- フィルタリングとグループ化
+- GraphQL APIアクセス
 
 ---
 
-## Understanding Field IDs
+## 手動フィールド作成
 
-GraphQL uses field IDs (UUIDs) to update custom fields. The system caches these IDs to minimize API calls.
+GraphQL APIはフィールド作成をサポートしていないため、GitHub UIで手動で作成する必要があります。
 
-### Field ID Cache Structure
+### Projectセッティングへアクセス
+
+1. アクセス: https://github.com/ujagr0121/databricks_study
+2. クリック: Projectsタブ
+3. クリック: "Databricks DE Professional Roadmap"
+4. クリック: Settings（歯車アイコン、右上）
+
+### 単一選択フィールドを作成
+
+**Statusフィールド:**
+1. クリック: "New Field" → "Single select"
+2. 名前: `Status`
+3. オプション:
+   - `Todo` （色: gray）
+   - `Doing` （色: yellow）
+   - `Done` （色: green）
+   - `Blocked` （色: red）
+4. 保存
+
+**Weekフィールド:**
+1. クリック: "New Field" → "Single select"
+2. 名前: `Week`
+3. オプション: `W1`, `W2`, `W3`, ..., `W12`
+4. 保存
+
+**Trackフィールド:**
+1. クリック: "New Field" → "Single select"
+2. 名前: `Track`
+3. オプション:
+   - `Common` （すべての学習者に適用）
+   - `DE` （データエンジニアリング集中）
+   - `ML` （機械学習集中）
+4. 保存
+
+**Priorityフィールド:**
+1. クリック: "New Field" → "Single select"
+2. 名前: `Priority`
+3. オプション: `P0` （重要）、`P1` （高）、`P2` （中）
+4. 保存
+
+### 数値フィールドを作成
+
+**Estimateフィールド:**
+1. クリック: "New Field" → "Number"
+2. 名前: `Estimate`
+3. 説明: "このタスクの推定時間"
+4. 保存
+
+### テキストフィールドを作成
+
+**Outcomeフィールド:**
+1. クリック: "New Field" → "Text"
+2. 名前: `Outcome`
+3. 説明: "完了ノートと成果"
+4. 保存（制限: 255文字）
+
+### フィールド設定完了
+
+すべてのフィールド作成後:
+
+1. プロジェクトボードに戻る
+2. すべてのフィールドが列またはタスク詳細に表示されるはず
+3. 実行: `bash scripts/github/lib/fields.sh refresh_field_cache`
+4. キャッシュ更新を確認: `.claude/github-field-cache.json`
+
+---
+
+## フィールドIDの理解
+
+GraphQLはカスタムフィールド更新にフィールドID（UUID）を使用します。システムはAPI呼び出しを最小化するためこれらのIDをキャッシュします。
+
+### フィールドIDキャッシュ構造
 
 ```json
 {
@@ -120,36 +120,36 @@ GraphQL uses field IDs (UUIDs) to update custom fields. The system caches these 
 }
 ```
 
-### Refreshing Cache
+### キャッシュのリフレッシュ
 
-When fields change (new options added, etc.):
+フィールド変更時（新しいオプション追加など）:
 
 ```bash
 source scripts/github/lib/fields.sh
 refresh_field_cache <project_id>
 
-# Check cache
+# キャッシュを確認
 cat .claude/github-field-cache.json | jq '.fields | keys'
 ```
 
 ---
 
-## GraphQL API Reference
+## GraphQL APIリファレンス
 
-### Authentication
+### 認証
 
-All GraphQL queries use `gh api graphql`:
+すべてのGraphQLクエリは`gh api graphql`を使用:
 
 ```bash
-gh api graphql -f query='...'  # File content
-gh api graphql -f query@file   # From file
+gh api graphql -f query='...'  # ファイル内容
+gh api graphql -f query@file   # ファイルから
 ```
 
-Your GitHub credentials are used automatically.
+GitHub認証情報が自動的に使用されます。
 
-### Core Queries
+### コアクエリ
 
-#### Get Project ID
+#### Project IDを取得
 
 ```graphql
 query {
@@ -164,7 +164,7 @@ query {
 }
 ```
 
-#### Get Field IDs for Project
+#### Projectのフィールド IDを取得
 
 ```graphql
 query {
@@ -191,7 +191,7 @@ query {
 }
 ```
 
-#### Get Issues in Project
+#### Project内のIssueを取得
 
 ```graphql
 query {
@@ -207,7 +207,7 @@ query {
 }
 ```
 
-#### Get Issue with Custom Fields
+#### カスタムフィールド付きIssueを取得
 
 ```graphql
 query {
@@ -249,9 +249,9 @@ query {
 }
 ```
 
-### Mutations
+### ミューテーション
 
-#### Add Issue to Project
+#### IssueをProjectに追加
 
 ```graphql
 mutation {
@@ -266,7 +266,7 @@ mutation {
 }
 ```
 
-#### Update Single Select Field
+#### 単一選択フィールドを更新
 
 ```graphql
 mutation {
@@ -283,7 +283,7 @@ mutation {
 }
 ```
 
-#### Update Text Field
+#### テキストフィールドを更新
 
 ```graphql
 mutation {
@@ -291,7 +291,7 @@ mutation {
     projectId: "PROJECT_ID"
     itemId: "ITEM_ID"
     fieldId: "FIELD_ID"
-    value: { text: "Your text here" }
+    value: { text: "ここにテキスト" }
   }) {
     projectV2Item {
       id
@@ -300,7 +300,7 @@ mutation {
 }
 ```
 
-#### Update Number Field
+#### 数値フィールドを更新
 
 ```graphql
 mutation {
@@ -321,35 +321,38 @@ mutation {
 
 ## GraphQL Explorer
 
-Debug and test queries using GitHub's GraphQL Explorer:
+GitHubのGraphQL Explorerを使用してクエリをデバッグおよびテスト:
 
-1. Go to: https://docs.github.com/en/graphql/overview/explorer
-2. Authenticate with your GitHub account
-3. Write and test queries
-4. Copy working queries to scripts
+1. アクセス: https://docs.github.com/ja/graphql/overview/explorer
+2. GitHubアカウントで認証
+3. クエリを記述してテスト
+4. 「Play」ボタンをクリックして実行
+5. 右パネルで結果を表示
+6. 必要に応じてクエリを改良
+7. 動作したらシェルスクリプトにコピー
 
-### Example Workflow
+### ワークフロー例
 
 ```
-1. Open Explorer
-2. Write query
-3. Click "Play" button to execute
-4. View results in right panel
-5. Refine query if needed
-6. Copy to shell script when working
+1. Explorerを開く
+2. クエリを記述
+3. 「Play」ボタンをクリックして実行
+4. 右パネルで結果を表示
+5. 必要に応じてクエリを改良
+6. 動作したらシェルスクリプトにコピー
 ```
 
 ---
 
-## Field Management Helpers
+## フィールド管理ヘルパー
 
-### List All Cached Fields
+### すべてのキャッシュされたフィールドをリスト
 
 ```bash
 source scripts/github/lib/fields.sh
 list_cached_fields
 
-# Output:
+# 出力:
 # Cached fields from: 2026-02-02T23:30:00Z
 # Status
 # Week
@@ -359,29 +362,29 @@ list_cached_fields
 # Outcome
 ```
 
-### Get Field ID
+### フィールドIDを取得
 
 ```bash
 source scripts/github/lib/fields.sh
 get_cached_field_id "Status"
-# Output: PVTF_lADOBEEX...
+# 出力: PVTF_lADOBEEX...
 ```
 
-### Get Option ID
+### オプションIDを取得
 
 ```bash
 source scripts/github/lib/fields.sh
 get_cached_option_id "Status" "Done"
-# Output: PVTSSF_...
+# 出力: PVTSSF_...
 ```
 
-### List Field Options
+### フィールドオプションをリスト
 
 ```bash
 source scripts/github/lib/fields.sh
 list_field_options "Week"
 
-# Output:
+# 出力:
 # W1
 # W2
 # W3
@@ -390,56 +393,56 @@ list_field_options "Week"
 
 ---
 
-## Custom Field Updates
+## カスタムフィールド更新
 
-### Update via Skill
+### Skill経由で更新
 
-The preferred method is using Skills which handle caching:
+推奨される方法はキャッシングを処理するSkillsを使用することです:
 
 ```bash
 /register-task tasks/week01/task-01.md
-# Automatically sets: Status, Week, Track, Estimate, Priority
+# 自動設定: Status、Week、Track、Estimate、Priority
 
 /update-progress tasks/week01/task-01.md
-# Updates: Status, Outcome if changed
+# 更新: 変更された場合はStatus、Outcome
 ```
 
-### Update via GitHub Project UI
+### GitHub Project UI経由で更新
 
-Manual updates in the Project board:
+Projectボードでの手動更新:
 
-1. Click on a task
-2. Edit custom fields in the right panel
-3. Changes are immediate
+1. タスクをクリック
+2. 右パネルでカスタムフィールドを編集
+3. 変更は即座に反映
 
-### Update via gh CLI
+### gh CLI経由で更新
 
-Direct Issue updates:
+直接Issue更新:
 
 ```bash
-# Add label
+# ラベルを追加
 gh issue edit 1 --add-label spark-sql
 
-# Close/reopen
+# クローズ/再オープン
 gh issue close 1
 gh issue reopen 1
 
-# Add comment
-gh issue comment 1 --body "Progress update..."
+# コメントを追加
+gh issue comment 1 --body "進捗更新..."
 ```
 
-### Update via GraphQL
+### GraphQL経由で更新
 
-For complex field updates:
+複雑なフィールド更新の場合:
 
 ```bash
-# Get necessary IDs first
+# 最初に必要なIDを取得
 PROJECT_ID="..."
 ITEM_ID="..."
 FIELD_ID="..."
 OPTION_ID="..."
 
-# Then update
+# 次に更新
 gh api graphql -f query='mutation {
   updateProjectV2ItemFieldValue(input: {
     projectId: "'$PROJECT_ID'"
@@ -456,122 +459,122 @@ gh api graphql -f query='mutation {
 
 ---
 
-## Troubleshooting
+## トラブルシューティング
 
-### Field Cache Out of Sync
+### フィールドキャッシュが同期していない
 
-If field IDs change (manual updates):
+フィールドIDが変更された場合（手動更新）:
 
 ```bash
-# Refresh from GitHub
+# GitHubからリフレッシュ
 source scripts/github/lib/fields.sh
 PROJECT_ID=$(jq -r '.project_id' .claude/github-field-cache.json)
 refresh_field_cache "$PROJECT_ID"
 
-# Verify
+# 確認
 show_cache_info
 ```
 
-### "Field not found" Error
+### "Field not found" エラー
 
-Field doesn't exist in project:
+フィールドがプロジェクトに存在しません:
 
 ```bash
-# List actual fields
+# 実際のフィールドをリスト
 show_cache_info
 
-# Or query directly:
+# または直接クエリ:
 gh api graphql -f query='...' | jq '.data.node.fields.nodes'
 
-# Then create missing field manually in UI
+# 次にUIで不足しているフィールドを手動で作成
 ```
 
-### "Invalid option ID" Error
+### "Invalid option ID" エラー
 
-Option doesn't exist for field:
+フィールドにオプションが存在しません:
 
 ```bash
-# List available options
+# 利用可能なオプションをリスト
 list_field_options "Status"
 
-# Add missing option in Project Settings
+# Project Settingsで不足しているオプションを追加
 ```
 
-### GraphQL Query Errors
+### GraphQLクエリエラー
 
-Use `--debug` flag to see full API response:
+完全なAPIレスポンスを表示するために`--debug`フラグを使用:
 
 ```bash
 gh api graphql --debug -f query='...'
 
-# Common errors:
-# - Node ID not found: Check PROJECT_ID, ITEM_ID format
-# - Permission denied: Check Personal Access Token scopes
-# - Invalid value: Verify field type (singleSelect vs text vs number)
+# 一般的なエラー:
+# - Node ID not found: PROJECT_ID、ITEM_IDフォーマットを確認
+# - Permission denied: Personal Access Tokenスコープを確認
+# - Invalid value: フィールドタイプを確認（singleSelect vs text vs number）
 ```
 
-### API Rate Limiting
+### APIレート制限
 
-If hitting rate limits:
+レート制限に達した場合:
 
 ```bash
-# Check current rate limit
+# 現在のレート制限を確認
 gh api rate_limit
 
-# Reset timing
+# リセットタイミング
 gh api rate_limit | jq '.rate.reset | todate'
 ```
 
-Solutions:
-- Use field ID cache to minimize requests
-- Batch updates with `/sync-week`
-- Wait for rate limit reset (1 hour)
+解決策:
+- リクエストを最小化するためフィールドIDキャッシュを使用
+- `/sync-week`でバッチ更新
+- レート制限リセットを待つ（1時間）
 
 ---
 
-## Best Practices
+## ベストプラクティス
 
-1. **Cache First**: Always use cached field IDs to minimize API calls
-2. **Refresh Regularly**: Run `refresh_field_cache` after manual Project changes
-3. **Validate Input**: Check option IDs before updating fields
-4. **Batch Operations**: Use `/sync-week` for multiple tasks
-5. **Monitor Rate Limits**: Know your API usage
-6. **Keep Secrets Safe**: Never commit Personal Access Tokens
-7. **Test Queries**: Use GraphQL Explorer before scripting
-
----
-
-## Advanced Features
-
-### Project Views
-
-GitHub Projects V2 supports multiple views:
-
-1. **Table View**: Spreadsheet-like layout
-2. **Board View**: Kanban columns (default)
-3. **Custom Fields**: Group by Week, Track, etc.
-
-Access: Project settings → Views
-
-### Automation (Future)
-
-Consider GitHub Actions for:
-- Auto-add new Issues to Project
-- Auto-update fields based on Issue labels
-- Weekly sync reports
-
-### Integration with Other Tools
-
-Possible integrations:
-- Slack notifications on Issue updates
-- Calendar sync for task deadlines
-- Habit trackers for study streaks
+1. **キャッシュ優先**: API呼び出しを最小化するため、常にキャッシュされたフィールドIDを使用
+2. **定期的にリフレッシュ**: 手動Project変更後に`refresh_field_cache`を実行
+3. **入力を検証**: フィールド更新前にオプションIDを確認
+4. **バッチ操作**: 複数タスクには`/sync-week`を使用
+5. **レート制限を監視**: API使用状況を把握
+6. **秘密を安全に保管**: Personal Access Tokenを絶対にコミットしない
+7. **クエリをテスト**: スクリプト化前にGraphQL Explorerを使用
 
 ---
 
-## References
+## 高度な機能
 
-- GitHub Projects V2 Docs: https://docs.github.com/en/issues/planning-and-tracking-with-projects/managing-your-project
-- GraphQL API: https://docs.github.com/en/graphql
-- Custom Fields: https://docs.github.com/en/issues/planning-and-tracking-with-projects/understanding-fields
+### Projectビュー
+
+GitHub Projects V2は複数のビューをサポート:
+
+1. **テーブルビュー**: スプレッドシートのようなレイアウト
+2. **ボードビュー**: Kanban列（デフォルト）
+3. **カスタムフィールド**: Week、Trackなどでグループ化
+
+アクセス: Projectの設定 → Views
+
+### 自動化（今後）
+
+以下のためのGitHub Actionsを検討:
+- 新しいIssueをProjectに自動追加
+- Issueラベルに基づいてフィールドを自動更新
+- 週次同期レポート
+
+### 他のツールとの統合
+
+可能な統合:
+- Issue更新時のSlack通知
+- タスク期限のカレンダー同期
+- 学習連続記録のハビットトラッカー
+
+---
+
+## リファレンス
+
+- GitHub Projects V2ドキュメント: https://docs.github.com/ja/issues/planning-and-tracking-with-projects/learning-about-projects
+- GraphQL API: https://docs.github.com/ja/graphql
+- カスタムフィールド: https://docs.github.com/ja/issues/planning-and-tracking-with-projects/understanding-fields
 - gh CLI: https://cli.github.com/manual

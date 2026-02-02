@@ -1,94 +1,94 @@
-# Databricks DE Professional Certification - Learning Management System
+# Databricks DE Professional 認定試験 - 学習進捗管理システム
 
-A comprehensive learning management system for tracking Databricks Data Engineer Professional certification study progress. Uses local Markdown files as the source of truth, synchronized to GitHub Projects (V2) via custom Skills and Subagents.
+Databricks Data Engineer Professional 認定試験の学習進捗を追跡するための包括的な学習管理システム。ローカルMarkdownファイルを真実の源（Single Source of Truth）とし、カスタムSkillsとSubagentsを介してGitHub Projects (V2)に同期します。
 
-## Overview
+## 概要
 
-This system provides:
+このシステムが提供する機能：
 
-- **Local Markdown Files**: Learn objectives, progress tracking, outcomes in portable Markdown
-- **GitHub Projects Integration**: Visual task board with custom fields (Status, Week, Track, Estimate, Priority)
-- **Custom Skills**: `/register-task`, `/update-progress`, `/sync-week` for GitHub synchronization
-- **AI Subagents**: `learning-planner` for curriculum design, `progress-analyzer` for insights
-- **Structured Tracking**: 12-week study plan with ~50-100 tasks across Common, DE, and ML tracks
+- **ローカルMarkdownファイル**: 学習目標、進捗追跡、成果を移植可能なMarkdown形式で管理
+- **GitHub Projects統合**: カスタムフィールド（ステータス、週、トラック、見積時間、優先度）を持つ視覚的なタスクボード
+- **カスタムSkills**: `/register-task`、`/update-progress`、`/sync-week`でGitHub同期を実現
+- **AIサブエージェント**: カリキュラム設計用の`learning-planner`、分析用の`progress-analyzer`
+- **構造化された追跡**: 12週間の学習計画で約50-100のタスクをCommon、DE、MLトラックに分類
 
-## Prerequisites
+## 前提条件
 
-- **GitHub Account**: Personal account (ujagr0121)
-- **GitHub CLI**: `brew install gh` (or your package manager)
-- **jq**: `brew install jq` (for JSON parsing)
-- **Personal Access Token**: Repo & Project permissions
+- **GitHubアカウント**: 個人アカウント (ujagr0121)
+- **GitHub CLI**: `brew install gh` (またはお使いのパッケージマネージャー)
+- **jq**: `brew install jq` (JSON解析用)
+- **Personal Access Token**: RepoとProjectの権限
 
-## Quick Start
+## クイックスタート
 
-### 1. Initial Setup
+### 1. 初期セットアップ
 
 ```bash
-# Create GitHub Personal Access Token
-# Go to https://github.com/settings/tokens
-# Permissions: repo, project
+# GitHub Personal Access Tokenを作成
+# https://github.com/settings/tokens にアクセス
+# 権限: repo, project
 
-# Authenticate with GitHub CLI
+# GitHub CLIで認証
 gh auth login
 
-# Run setup script to create Project and labels
+# セットアップスクリプトを実行してProjectとラベルを作成
 bash scripts/github/setup-project.sh
 
-# Verify Project was created
+# Projectが作成されたことを確認
 gh project list
 ```
 
-### 2. Create Your First Task
+### 2. 最初のタスクを作成
 
 ```bash
-# Copy template for Week 1, Task 1
+# Week 1、Task 1のテンプレートをコピー
 cp tasks/template.md tasks/week01/task-01-spark-basics.md
 
-# Edit the file with your learning objectives
+# 学習目標を記入してファイルを編集
 # week: W1
 # track: DE
-# title: "Spark SQL Fundamentals"
+# title: "Spark SQL基礎"
 # estimate: 6
 
-# Register with GitHub
+# GitHubに登録
 /register-task tasks/week01/task-01-spark-basics.md
 ```
 
-### 3. Track Progress
+### 3. 進捗を記録
 
 ```bash
-# Add learning notes to your local Markdown file
-# Then sync to GitHub
+# ローカルMarkdownファイルに学習ノートを追加
+# その後GitHubに同期
 
 /update-progress tasks/week01/task-01-spark-basics.md
 ```
 
-### 4. View on GitHub
+### 4. GitHubで確認
 
 ```bash
-# Open your GitHub Project board
+# GitHub Projectボードを開く
 gh project view 1 --web
 
-# Or check specific issue
-gh issue view <number>
+# または特定のIssueを確認
+gh issue view <番号>
 ```
 
-## Directory Structure
+## ディレクトリ構造
 
 ```
 databricks_study/
-├── .claude/                    # Claude Code configuration
-│   ├── settings.local.json     # Permissions and execution settings
-│   ├── github-field-cache.json # Cached field IDs (auto-generated)
-│   ├── agents/                 # Subagent definitions
+├── .claude/                    # Claude Code設定
+│   ├── settings.local.json     # 権限と実行設定
+│   ├── github-field-cache.json # キャッシュされたフィールドID（自動生成）
+│   ├── agents/                 # サブエージェント定義
 │   │   ├── learning-planner.md
 │   │   └── progress-analyzer.md
-│   └── skills/                 # Custom Skills
+│   └── skills/                 # カスタムSkills
 │       ├── register-task/
 │       ├── update-progress/
 │       └── sync-week/
 │
-├── scripts/                    # Shared utility scripts
+├── scripts/                    # 共有ユーティリティスクリプト
 │   ├── github/
 │   │   ├── setup-project.sh
 │   │   ├── create-labels.sh
@@ -103,85 +103,85 @@ databricks_study/
 │       ├── learning-task.yml
 │       └── deliverable.yml
 │
-├── tasks/                      # Learning tasks (source of truth)
+├── tasks/                      # 学習タスク（真実の源）
 │   ├── template.md
 │   ├── week01/ ... week12/
 │
-├── docs/                       # Documentation
+├── docs/                       # ドキュメント
 │   ├── setup.md
 │   ├── workflow.md
 │   └── github-setup.md
 │
-├── management.toml             # Claude Code configuration
+├── management.toml             # Claude Code設定
 ├── .gitignore
 └── README.md
 ```
 
-## Available Commands
+## 利用可能なコマンド
 
 ### Skills
 
-- **`/register-task <path>`**: Register a local task to GitHub Issue + Project
+- **`/register-task <パス>`**: ローカルタスクをGitHub IssueとProjectに登録
   ```bash
   /register-task tasks/week01/task-01-spark-basics.md
   ```
 
-- **`/update-progress <path>`**: Sync learning progress to Issue
+- **`/update-progress <パス>`**: 学習進捗をIssueに同期
   ```bash
   /update-progress tasks/week01/task-01-spark-basics.md
   ```
 
-- **`/sync-week <week>`**: Batch sync all tasks in a week
+- **`/sync-week <週>`**: 週のすべてのタスクを一括同期
   ```bash
   /sync-week W1
   ```
 
-### Agents
+### Agents（エージェント）
 
-- **`learning-planner`**: Design learning curriculum
+- **`learning-planner`**: 学習カリキュラムを設計
   ```
-  Plan Week 1 and 2 learning tasks for Spark SQL fundamentals
-  ```
-
-- **`progress-analyzer`**: Analyze study progress
-  ```
-  Analyze my Week 1 progress and suggest adjustments
+  Week 1と2のSpark SQL基礎の学習タスクを計画してください
   ```
 
-## Workflow Examples
+- **`progress-analyzer`**: 学習進捗を分析
+  ```
+  Week 1の進捗を分析して、調整案を提示してください
+  ```
 
-### Starting a New Week
+## ワークフローの例
 
-1. Invoke `learning-planner` agent with week goals
-2. Review generated Markdown files in `tasks/weekXX/`
-3. Register tasks with `/register-task`
-4. Update task metadata in GitHub Project UI if needed
+### 新しい週を開始する
 
-### Daily Learning
+1. 週の目標を指定して`learning-planner`エージェントを実行
+2. `tasks/weekXX/`に生成されたMarkdownファイルをレビュー
+3. `/register-task`でタスクを登録
+4. 必要に応じてGitHub Project UIでタスクメタデータを更新
 
-1. Open local Markdown file (`tasks/weekXX/task-XX.md`)
-2. Add learning notes to "学習記録" section with date stamp
-3. Update status (Todo → Doing → Done) in YAML frontmatter
-4. Run `/update-progress` to sync to Issue
+### 日々の学習
 
-### Weekly Review
+1. ローカルMarkdownファイル（`tasks/weekXX/task-XX.md`）を開く
+2. 「学習記録」セクションに日付スタンプ付きで学習ノートを追加
+3. YAMLフロントマターでステータスを更新（Todo → Doing → Done）
+4. `/update-progress`を実行してIssueに同期
 
-1. Run `/sync-week W1` to batch update all tasks
-2. Invoke `progress-analyzer` for insights
-3. Review metrics: velocity, topic balance, estimate accuracy
-4. Plan next week adjustments
+### 週次レビュー
 
-## Key Concepts
+1. `/sync-week W1`を実行してすべてのタスクを一括更新
+2. `progress-analyzer`を実行して洞察を取得
+3. メトリクスをレビュー: 速度、トピックバランス、見積精度
+4. 次週の調整を計画
 
-### Task Structure
+## 主要な概念
 
-Each task is a Markdown file with YAML frontmatter:
+### タスク構造
+
+各タスクはYAMLフロントマター付きのMarkdownファイルです：
 
 ```yaml
 ---
 week: W1
 track: DE
-title: "Spark SQL Fundamentals"
+title: "Spark SQL基礎"
 estimate: 6
 priority: P1
 status: Todo
@@ -190,57 +190,57 @@ github_issue: "https://github.com/ujagr0121/databricks_study/issues/1"
 ---
 
 # 学習目標
-- Understand Spark SQL architecture
-- Master DataFrame API
-- Practice query optimization
+- Spark SQLアーキテクチャを理解する
+- DataFrame APIをマスターする
+- クエリ最適化を実践する
 
 # 学習記録
 ## 2026-02-02
-- Completed Spark SQL overview
-- 2 hours spent
+- Spark SQLの概要を完了
+- 2時間実施
 
 # アウトカム
-(Updated after completion)
+（完了後に更新）
 ```
 
-### GitHub Project Fields
+### GitHub Projectフィールド
 
-Custom fields automatically managed:
+自動管理されるカスタムフィールド：
 
 - **Status**: Todo, Doing, Done, Blocked
 - **Week**: W1-W12
 - **Track**: Common, DE, ML
-- **Estimate**: Hours (number)
+- **Estimate**: 時間数（数値）
 - **Priority**: P0, P1, P2
-- **Outcome**: Text field for completion notes
+- **Outcome**: 完了ノート用のテキストフィールド
 
-### Local Markdown = Source of Truth
+### ローカルMarkdown = 真実の源
 
-- GitHub Issues are read-only views
-- All edits happen in local Markdown
-- Skills push updates to GitHub (one-way sync)
-- Enables offline work, version control friendly
+- GitHub Issueは読み取り専用ビュー
+- すべての編集はローカルMarkdownで実施
+- Skillsは更新をGitHubにプッシュ（一方向同期）
+- オフライン作業を可能にし、バージョン管理と親和性が高い
 
-## Documentation
+## ドキュメント
 
-- **[setup.md](docs/setup.md)**: Detailed setup guide
-- **[workflow.md](docs/workflow.md)**: Daily workflow reference
-- **[github-setup.md](docs/github-setup.md)**: GitHub Projects configuration details
+- **[setup.md](docs/setup.md)**: 詳細なセットアップガイド
+- **[workflow.md](docs/workflow.md)**: 日常ワークフローリファレンス
+- **[github-setup.md](docs/github-setup.md)**: GitHub Projects設定詳細
 
-## Support
+## サポート
 
-For issues and questions:
-- Check [docs/github-setup.md](docs/github-setup.md) troubleshooting section
-- Review Skill logs: Check `.claude/` directory for error logs
-- GitHub API errors: Use `gh api graphql --debug`
+問題や質問については：
+- [docs/github-setup.md](docs/github-setup.md)のトラブルシューティングセクションを確認
+- Skillログをレビュー: `.claude/`ディレクトリのエラーログを確認
+- GitHub APIエラー: `gh api graphql --debug`を使用
 
-## Future Enhancements
+## 今後の機能強化
 
-- GitHub Actions for automatic Issue→Project sync
-- Dashboard generation with weekly metrics
-- Integration with learning artifacts (notebooks, queries)
-- Codex integration for multi-workspace support
+- Issue→Project自動同期のためのGitHub Actions
+- 週次メトリクス付きのダッシュボード生成
+- 学習成果物（ノートブック、クエリ）との統合
+- マルチワークスペースサポート用のCodex統合
 
-## License
+## ライセンス
 
-Personal study project - private use only.
+個人学習プロジェクト - プライベート利用のみ
