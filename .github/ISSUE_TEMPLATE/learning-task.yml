@@ -1,0 +1,103 @@
+name: Learning Task
+description: Create a new learning task for the Databricks certification study plan
+title: "[Week X] "
+labels: [study]
+body:
+  - type: input
+    id: title
+    attributes:
+      label: Task Title
+      placeholder: "e.g., Spark SQL Fundamentals"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: week
+    attributes:
+      label: Week
+      options:
+        - "W1"
+        - "W2"
+        - "W3"
+        - "W4"
+        - "W5"
+        - "W6"
+        - "W7"
+        - "W8"
+        - "W9"
+        - "W10"
+        - "W11"
+        - "W12"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: track
+    attributes:
+      label: Track
+      description: Which certification track does this task belong to?
+      options:
+        - "Common"
+        - "DE"
+        - "ML"
+    validations:
+      required: true
+
+  - type: input
+    id: estimate
+    attributes:
+      label: Time Estimate (hours)
+      placeholder: "4"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - "P0"
+        - "P1"
+        - "P2"
+
+  - type: dropdown
+    id: status
+    attributes:
+      label: Status
+      options:
+        - "Todo"
+        - "Doing"
+        - "Done"
+        - "Blocked"
+
+  - type: textarea
+    id: objectives
+    attributes:
+      label: Learning Objectives
+      description: What should be learned in this task?
+      placeholder: "- Understand X\n- Master Y\n- Practice Z"
+
+  - type: checkboxes
+    id: labels
+    attributes:
+      label: Topic Labels
+      options:
+        - label: spark-sql
+        - label: delta
+        - label: unity-catalog
+        - label: jobs
+        - label: perf-cost
+        - label: governance
+        - label: cluster-mgmt
+        - label: ml-feature-store
+
+  - type: checkboxes
+    id: type_labels
+    attributes:
+      label: Task Type
+      options:
+        - label: study (Study material)
+          selected: true
+        - label: handson (Hands-on exercise)
+        - label: deliverable (Deliverable output)
+        - label: review (Review and consolidation)

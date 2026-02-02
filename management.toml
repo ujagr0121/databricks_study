@@ -1,0 +1,17 @@
+[features]
+web_search = "disabled"
+
+[execution]
+allow_shell = true
+allow_file_write = true
+
+[agent.learning-planner]
+max_iterations = 50
+timeout = 300
+
+[agent.progress-analyzer]
+max_iterations = 30
+timeout = 180
+
+[output]
+style = "structured"

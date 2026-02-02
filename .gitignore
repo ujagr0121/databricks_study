@@ -1,0 +1,38 @@
+# Claude Code sessions and caches
+.claude/sessions/
+.claude/github-field-cache.json
+.claude/*.log
+
+# Environment and secrets
+.env
+.env.local
+*.key
+*.pem
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+logs/
+
+# IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Node (for any GitHub workflows)
+node_modules/
+npm-debug.log
+
+# Temporary files
+*.tmp
+.tmp/
+
+# GitHub API debug
+graphql-debug.json
